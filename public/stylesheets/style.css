@@ -1,0 +1,45 @@
+/*body {*/
+  /*padding: 50px;*/
+  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+/*}*/
+
+/*a {*/
+  /*color: #00B7FF;*/
+/*}*/
+
+.container {
+    margin-left: 20px;
+    margin-right: 20px;
+    max-width: 100px;
+}
+
+.profile-page .card-profile{
+    margin-top: -450px !important;
+}
+
+.card-it{
+    background-color: transparent !important;
+    color: #ffffff;
+}
+.card-it .px-4 .h3{
+    color: #ffffff !important;
+}
+
+@font-face {
+    font-family: "Google Sans";
+    src: url("/vendor/Google-Sans-Font/GoogleSans-Bold.ttf")format("truetype");
+}
+
+@font-face {
+    font-family: "Google Sans";
+    src: url("/vendor/Google-Sans-Font/GoogleSans-Medium.ttf")format("truetype");
+}
+
+@font-face {
+    font-family: "Google Sans";
+    src: url("/vendor/Google-Sans-Font/GoogleSans-Regular.ttf")format("truetype");
+}
+
+html{
+    font-family: "Google Sans", sans-serif !important;
+}
