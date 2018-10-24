@@ -1,8 +1,8 @@
 <header class="header-global">
     <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light">
         <div class="container">
-            <a class="navbar-brand mr-lg-5" href="">
-                <img src="/img/ill/ill-2.svg" style="height:70px"><h4 style="color: #ffffff; font-size: 30px;">Xclusive</h4>
+            <a class="navbar-brand mr-lg-5" href="" style="display: inline-flex;">
+                <img src="/images/barter.png" style="height:70px"><h4 style="color: #ffffff; font-size: 30px; padding-top: 15px; margin-left: 4px">Xclusive</h4>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global"
                     aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@
                 <div class="col-md-4">
                     <div class="card card-profile card-it">
                             <div class="text-left" style="color: #fff;">
-                                <h2 style="color: #ffffff;"> Exinvest Xclusive</h2>
+                                <h2 style="color: #ffffff;"> Barter Xclusive</h2>
                                 <div class="h4 font-weight-300" style="color: #ffffff; text-align: left">
                                     A simple tool to help you get the real status of
                                     a transaction.
@@ -76,8 +76,7 @@
                             <div class="text-center mt-5">
                                 <h2>Transaction Status Confirmation</h2>
                                 <div class="h6 font-weight-300" style="margin-left: 20px; margin-right: 20px;"><i
-                                        class="ni location_pin mr-2"></i>Kindly enter the Flutterwave and transaction
-                                    references to requery this transaction.
+                                        class="ni location_pin mr-2"></i>This will update the transaction status and fund the user's account on Barter.
                                 </div>
                             </div>
                             <div class="mt-5 py-5 border-top text-center">
@@ -85,7 +84,7 @@
                                     <div class="col-lg-9">
                                         <div class="form-group">
                                             <div class="input-group mb-4">
-                                                <input class="form-control" placeholder="Flutterwave Reference" type="text">
+                                                <input class="form-control" placeholder="Flutterwave Reference" id="flwref" type="text">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text"><i
                                                             class="ni ni-zoom-split-in"></i></span>
@@ -93,7 +92,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="input-group mb-4">
-                                                    <input class="form-control" placeholder="Transaction Reference" type="text">
+                                                    <input class="form-control" placeholder="Barter Reference" id="ref" type="text">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text"><i
                                                                 class="ni ni-zoom-split-in"></i></span>
@@ -101,7 +100,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-outline-primary">Re-Query</button>
+                                        <button type="button" id="submit-it" class="btn btn-outline-primary">Re-Query</button>
                                     </div>
                                 </div>
                             </div>
@@ -138,31 +137,61 @@
                 </a>
             </div>
         </div>
-        <!--<hr>-->
-        <!--<div class="row align-items-center justify-content-md-between">-->
-        <!--<div class="text-lg-center">-->
-        <!--<div class="copyright">-->
-        <!--&copy; 2018-->
-        <!--<a href="https://github.com/michaelO93" target="_blank">M.O</a> |-->
-        <!--Credit:  <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
-        <!--&lt;!&ndash;<ul class="nav nav-footer justify-content-end">&ndash;&gt;-->
-        <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-        <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">About Us</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-        <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="http://blog.creative-tim.com" class="nav-link" target="_blank">Blog</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-        <!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="https://github.com/creativetimofficial/argon-design-system/blob/master/LICENSE.md" class="nav-link" target="_blank">MIT License</a>&ndash;&gt;-->
-        <!--&lt;!&ndash;</li>&ndash;&gt;-->
-        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
     </div>
 </footer>
+
+<script type="application/javascript">
+    $(document).ready(function () {
+
+        $('#submit-it').click(function (e) {
+            e.preventDefault();
+
+            let flwref = $('#flwref').val(), barterRef = $('#ref').val();
+            if (flwref === '' || barterRef === ''){
+                return false;
+            } else {
+                const data = {
+                    flw_ref: flwref,
+                    reference: barterRef
+                };
+                $('#submit-it').html("PROCESSING").attr("disabled", "disabled");
+                $.ajax({
+                    url:'/status-check',
+                    type: 'json',
+                    data: data,
+                    method: 'POST',
+                    success:function (response) {
+                        $('#submit-it').html("RE-QUERY").removeAttr("disabled");
+                        if (response.status === 'success') {
+                            iziToast.success({
+                                title: 'Success',
+                                message: response.message,
+                                position: 'topRight',
+                                timeout: 6000
+                            });
+                        } else {
+                            iziToast.error({
+                                title: 'Oops!',
+                                message: response.message,
+                                position:'topRight',
+                                timeout: 6000
+                            });
+                        }
+
+                    },
+                    error: function (error) {
+                        iziToast.error({
+                            title: 'Oops!',
+                            message: error.message,
+                            position:'topRight',
+                            timeout: 7000
+                        });
+                    }
+
+                })
+            }
+
+        });
+
+    })
+</script>
